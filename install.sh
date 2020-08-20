@@ -24,7 +24,7 @@ if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
     sudo apt update && sudo apt upgrade
     echo "...done"
     echo "Using apt to install needed packages..."
-    sudo apt install curl neofetch neovim openjdk-13-jdk ranger tree wget
+    sudo apt install curl fonts-powerline neofetch neovim openjdk-13-jdk ranger tree wget
     echo "...done"
 elif [ $distro = "Arch"]; then
     echo "Updating and upgrading packages..."
@@ -35,6 +35,7 @@ elif [ $distro = "Arch"]; then
     echo "...done"
 fi
 
+# Create directories
 if [ ! -d ~/.config/alacritty ]; then
     echo "Creating .config/alacritty directory..."
     mkdir -p ~/.config/alacritty
@@ -45,6 +46,12 @@ if [ ! -d ~/.config/nvim ]; then
     echo "Creating .config/nvim directory..."
     mkdir -p ~/.config/nvim
     echo "...done"
+fi
+
+# Install vim-plug
+if [ ! -e ~/.local/share/nvim/site/autoload/plug.vim ]; then
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
 # Symbolic link alacritty config
@@ -89,6 +96,16 @@ if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     echo "...done"
 fi
+
+# Symbolic link tmux.conf
+if [ -e ~/.tmux.conf ] || [ -h ~/.tmux.conf ]; then
+    echo "Removing old .tmux.conf..."
+    rm ~/.tmux.conf
+    echo "...done"
+fi
+echo "Creating symbolic link to ~/.dotfiles/tmux/.tmux.conf..."
+ln -s ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
+echo "...done"
 
 # Install zsh-syntax-highlighting if not already installed
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
