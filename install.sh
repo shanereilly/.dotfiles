@@ -13,20 +13,31 @@
 distro=""
 
 echo "Detecting distribution..."
-if [ `cat /etc/*-release | grep -c "ubuntu"` > 0 ]; then
-    echo "Running Ubuntu"
-    distro="Ubuntu"
+if [ `uname` != "Darwin" ]; then
+    if [ `cat /etc/*-release | grep -c "ubuntu"` > 0 ]; then
+        echo "Running Ubuntu"
+        distro="Ubuntu"
+    fi
+elif [ `uname` == "Darwin" ]; then
+    echo "Running MacOs"
+    distro="MacOS"
 fi
 
 # Install necessary packages
-if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
+if [ $distro == "Ubuntu" ] || [ $distro = "Debian" ]; then
     echo "Updating and upgrading packages..."
     sudo apt update && sudo apt upgrade
     echo "...done"
     echo "Using apt to install needed packages..."
     sudo apt install curl fonts-powerline neofetch neovim openjdk-13-jdk ranger tree wget
     echo "...done"
-elif [ $distro = "Arch"]; then
+elif [ $distro == "MacOS" ]; then
+    echo "Updating and upgrading packages..."
+    brew update && brew upgrade
+    echo "...done"
+    echo "Using brew to install needed packages..."
+    brew install curl neofetch neovim ranger tree wget
+elif [ $distro == "Arch"]; then
     echo "Updating and upgrading packages..."
     pacman -Syy
     echo "...done"
