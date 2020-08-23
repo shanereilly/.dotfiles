@@ -14,7 +14,7 @@ distro=""
 
 echo "Detecting distribution..."
 if [ `uname` != "Darwin" ]; then
-    if [ `cat /etc/*-release | grep -c "ubuntu"` > 0 ]; then
+    if [ `cat /etc/*-release | grep -c "ubuntu"` -gt 0 ]; then
         echo "Running Ubuntu"
         distro="Ubuntu"
     fi
