@@ -10,3 +10,6 @@
 [submodule "dmenu"]
 	path = dmenu
 	url = https://git.suckless.org/dmenu
+[submodule "tools/pwndbg"]
+	path = tools/pwndbg
+	url = https://github.com/pwndbg/pwndbg.git

@@ -91,6 +91,13 @@ echo "Creating symbolic link to ~/.dotfiles/gdb/.gdbinit..."
 ln -s ~/.dotfiles/gdb/.gdbinit ~/.gdbinit
 echo "...done"
 
+# Install pwndbg
+echo "Installing pwndbg..."
+cd ~/.dotfiles/tools/pwndbg/
+./setup.sh
+cd ~
+echo "...done"
+
 # Symbolic link nvim config
 if [ -e ~/.config/nvim/init.vim ] || [ -h ~/.config/nvim/init.vim ]; then
     echo "Deleting old init.vim..."
