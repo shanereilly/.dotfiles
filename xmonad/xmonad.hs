@@ -1,14 +1,29 @@
 import XMonad
+import XMonad.Config.Desktop
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
+import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.SpawnOnce
+import XMonad.Wallpaper
+
 import Data.Monoid
+
 import System.Exit
+import System.IO
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
---
-myTerminal      = "alacritty"
+
+-- Terminal emulator
+myTerminal :: String
+myTerminal = "alacritty"
+
+-- Font
+myFont :: String
+myFont = "xft:Hermit:antialias=true:hinting=true"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -19,35 +34,23 @@ myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
 -- Width of the window border in pixels.
---
-myBorderWidth   = 1
+myBorderWidth :: Dimension
+myBorderWidth = 2 
 
--- modMask lets you specify which modkey you want to use. The default
--- is mod1Mask ("left alt").  You may also consider using mod3Mask
--- ("right alt"), which does not conflict with emacs keybindings. The
--- "windows key" is usually mod4Mask.
---
-myModMask       = mod4Mask
+-- Mod key
+myModMask :: KeyMask
+myModMask = mod4Mask -- Windows key
 
--- The default number of workspaces (virtual screens) and their names.
--- By default we use numeric strings, but any string may be used as a
--- workspace name. The number of workspaces is determined by the length
--- of this list.
---
--- A tagging example:
---
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
 myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
--- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#969896"
+myNormalBorderColor :: String
+myNormalBorderColor  = "#dddddd" -- Border color of normal windows
+
+myFocusedBorderColor :: String
+myFocusedBorderColor = "#969896" -- Border color of focused windows
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
---
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
@@ -171,7 +174,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 --
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
---
+
 myLayout = tiled ||| Mirror tiled ||| Full
   where
      -- default tiling algorithm partitions the screen into two panes
@@ -204,6 +207,7 @@ myLayout = tiled ||| Mirror tiled ||| Full
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
+    , className =? "Ghidra"         --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
 
@@ -228,56 +232,50 @@ myLogHook = return ()
 
 ------------------------------------------------------------------------
 -- Startup hook
+myStartupHook :: X ()
+myStartupHook = do
+        spawnOnce "compton &"
+        -- Needed for Java GUI
+        setWMName "LG3D"
 
--- Perform an arbitrary action each time xmonad starts or is restarted
--- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
--- per-workspace layout choices.
---
--- By default, do nothing.
-myStartupHook = return ()
 
-------------------------------------------------------------------------
--- Now run xmonad with all the defaults we set up.
 
--- Run xmonad with the settings you specify. No need to modify this.
---
-main = xmonad defaults
+main::IO()
+main = do
+    -- Set wallpaper
+    setRandomWallpaper["$HOME/.dotfiles/wallpaper"]    
 
--- A structure containing your configuration settings, overriding
--- fields in the default config. Any you don't override, will
--- use the defaults defined in xmonad/XMonad/Config.hs
---
--- No need to modify this.
---
+    xmonad $ defaults 
+
 defaults = def {
-      -- simple stuff
-        terminal           = myTerminal,
-        focusFollowsMouse  = myFocusFollowsMouse,
-        clickJustFocuses   = myClickJustFocuses,
-        borderWidth        = myBorderWidth,
-        modMask            = myModMask,
-        workspaces         = myWorkspaces,
-        normalBorderColor  = myNormalBorderColor,
-        focusedBorderColor = myFocusedBorderColor,
+    -- simple stuff
+    terminal           = myTerminal,
+    focusFollowsMouse  = myFocusFollowsMouse,
+    clickJustFocuses   = myClickJustFocuses,
+    borderWidth        = myBorderWidth,
+    modMask            = myModMask,
+    workspaces         = myWorkspaces,
+    normalBorderColor  = myNormalBorderColor,
+    focusedBorderColor = myFocusedBorderColor,
 
-      -- key bindings
-        keys               = myKeys,
-        mouseBindings      = myMouseBindings,
+    -- key bindings
+    keys               = myKeys,
+    mouseBindings      = myMouseBindings,
 
-      -- hooks, layouts
-        layoutHook         = myLayout,
-        manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
-        logHook            = myLogHook,
-        startupHook        = myStartupHook
-    }
+    -- hooks, layouts
+    layoutHook         = myLayout,
+    manageHook         = myManageHook,
+    handleEventHook    = myEventHook,
+    logHook            = myLogHook,
+    startupHook        = myStartupHook
+}
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
 help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "",
     "-- launching and killing programs",
-    "mod-Shift-Enter  Launch xterminal",
+    "mod-Shift-Enter  Launch terminal",
     "mod-p            Launch dmenu",
     "mod-Shift-p      Launch gmrun",
     "mod-Shift-c      Close/kill the focused window",

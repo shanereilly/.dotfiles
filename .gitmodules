@@ -7,3 +7,6 @@
 [submodule "vim/plugs/base16-vim-airline-themes"]
 	path = vim/plugs/base16-vim-airline-themes
 	url = https://github.com/dawikur/base16-vim-airline-themes.git
+[submodule "dmenu"]
+	path = dmenu
+	url = https://git.suckless.org/dmenu

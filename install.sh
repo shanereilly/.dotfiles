@@ -29,7 +29,7 @@ if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
     sudo apt update && sudo apt upgrade
     echo "...done"
     echo "Using apt to install needed packages..."
-    sudo apt install curl fonts-powerline neofetch neovim openjdk-13-jdk ranger tree wget xmobar xmonad
+    sudo apt install curl fonts-powerline libghc-xmonad-wallpaper-dev neofetch neovim openjdk-13-jdk ranger tree wget xmobar xmonad
     echo "...done"
 elif [ $distro = "MacOS" ]; then
     echo "Updating and upgrading packages..."
@@ -42,7 +42,7 @@ elif [ $distro = "Arch"]; then
     pacman -Syy
     echo "...done"
     echo "Using pacman to install needed packages..."
-    pacman -S alacritty neofetch ranger tree xmobar xmonad
+    pacman -S alacritty dmenu neofetch ranger tree xcompmg xmoibar xmonad xmonad-contrib
     echo "...done"
 fi
 
@@ -113,6 +113,9 @@ if [ ! -d ~/.oh-my-zsh ]; then
     echo "...done"
 fi
 
+# Add custom oh-my-zsh theme
+ln -s ~/.dotfiles/oh-my-zsh/themes/zion.zsh-theme ~/.oh-my-zsh/themes/zion.zs-theme
+
 # Symbolic link tmux.conf
 if [ -e ~/.tmux.conf ] || [ -h ~/.tmux.conf ]; then
     echo "Removing old .tmux.conf..."
@@ -134,7 +137,9 @@ if [ -e ~/.xmobarrc ] || [ -h ~/.xmobarrc ]; then
     rm ~/.xmobarrc
     echo "...done"
 fi
-ln -s ~/.dotfiles/xmobar/.xmobarrc ~/.config/xmobar/.xmobarrc
+echo "Creating symbolic link to ~/.dotfiles/xmobar/xmobarrc..."
+ln -s ~/.dotfiles/xmobar/xmobarrc ~/.config/xmobar/.xmobarrc
+echo "...done"
 
 # Symbolic link xmonad.hs
 if [ -e ~/.xmonad/xmonad.hs ] || [ -h ~/.xmonad/xmonad.hs ]; then
@@ -142,15 +147,19 @@ if [ -e ~/.xmonad/xmonad.hs ] || [ -h ~/.xmonad/xmonad.hs ]; then
     rm ~/.xmonad/xmonad.hs
     echo "...done"
 fi
+echo "Creating symbolic link to ~/.dotfiles/xmonad/xmonad.hs..."
 ln -s ~/.dotfiles/xmonad/xmonad.hs ~/.xmonad/xmonad.hs
+echo "...done"
 
 # Symbolic link .xinitrc
-if [ -e ~/.xinitrx ] || [ -h ~/.xinitc ]; then
+if [ -e ~/.xinitrc ] || [ -h ~/.xinitc ]; then
     echo "Removing old .xinitrc..."
     rm ~/.xinitrc
     echo "...done"
 fi
+echo "Creating symbolic link to ~/.dotfiles/xinitrc..."
 ln -s ~/.dotfiles/xinitrc ~/.xinitrc
+echo "...done"
 
 # Symbolic link .xprofile
 if [ -e ~/.xprofile ] || [ -h ~/.xprofile ]; then
