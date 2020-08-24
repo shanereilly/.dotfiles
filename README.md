@@ -1,7 +1,7 @@
 # dotfiles
 My personal dotfiles. 
 
-## Tools
+## Software
 - **Browser**: [firefox](https://www.mozilla.org/en-US/exp/firefox/)
 - **Colorscheme**: [base16 tomorrow-night](https://github.com/chriskempson/base16-tomorrow-scheme)
 - **Font**: [hermit](https://pcaro.es/p/hermit/)
