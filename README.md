@@ -29,7 +29,7 @@ My personal dotfiles.
 |---------------------------------------------------:|:------------------------------------|
 |<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>Return</kbd> | Start a terminal                    |
 |<kbd>Super</kbd>+<kbd>p</kbd>                       | Start dmenu                         |
-|<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd> |    | Close focused window                |
+|<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd>      | Close focused window                |
 |<kbd>Super</kbd>+<kbd>Space</kbd>                   | Change workspace layout             |
 |<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd>  | Change back to default layout       |
 |<kbd>Super</kbd>+<kbd>Tab</kbd>                     | Focus next window                   |
