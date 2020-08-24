@@ -21,7 +21,7 @@ My personal dotfiles.
 |                 Key Binding                        |                  Action             |
 |---------------------------------------------------:|:------------------------------------|
 |<kbd>Ctrl</kbd>+<kbd>b</kbd>                        | Prefix key                          |
-|<kbd>Prefix</kbd>+<kbd>|</kbd>                      | Split vertically                    |
+|<kbd>Prefix</kbd>+<kbd>\|</kbd>                      | Split vertically                    |
 |<kbd>Prefix</kbd>+<kbd>-</kbd>                      | Split horizontally                  |
 
 ### XMonad
