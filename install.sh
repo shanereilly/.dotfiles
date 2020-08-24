@@ -1,48 +1,48 @@
 #!/bin/sh
 
- Install script for my .dotfiles
-# Terminal: alacritty
-# Shell: zsh
-# Text editor: neovim
-# 
+# Install script for my .dotfiles
 
-# Create .config folder and subfolders
+# Color scheme: Base16 Tomorrow Night
+# Font: hermit
+# Shell: zsh
+# Terminal: alacritty
+# Text editor: neovim
+# Window manager: xmonad 
+
 
 # Distro detect
-
 distro=""
-
 echo "Detecting distribution..."
 if [ `uname` != "Darwin" ]; then
     if [ `cat /etc/*-release | grep -c "ubuntu"` -gt 0 ]; then
         echo "Running Ubuntu"
         distro="Ubuntu"
     fi
-elif [ `uname` == "Darwin" ]; then
+elif [ `uname` = "Darwin" ]; then
     echo "Running MacOs"
     distro="MacOS"
 fi
 
 # Install necessary packages
-if [ $distro == "Ubuntu" ] || [ $distro = "Debian" ]; then
+if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
     echo "Updating and upgrading packages..."
     sudo apt update && sudo apt upgrade
     echo "...done"
     echo "Using apt to install needed packages..."
-    sudo apt install curl fonts-powerline neofetch neovim openjdk-13-jdk ranger tree wget
+    sudo apt install curl fonts-powerline neofetch neovim openjdk-13-jdk ranger tree wget xmobar xmonad
     echo "...done"
-elif [ $distro == "MacOS" ]; then
+elif [ $distro = "MacOS" ]; then
     echo "Updating and upgrading packages..."
     brew update && brew upgrade
     echo "...done"
     echo "Using brew to install needed packages..."
-    brew install curl neofetch neovim ranger tree wget
-elif [ $distro == "Arch"]; then
+    brew install alacritty curl neofetch neovim ranger tree wget
+elif [ $distro = "Arch"]; then
     echo "Updating and upgrading packages..."
     pacman -Syy
     echo "...done"
     echo "Using pacman to install needed packages..."
-    pacman -S neofetch ranger tree
+    pacman -S alacritty neofetch ranger tree xmobar xmonad
     echo "...done"
 fi
 
@@ -56,6 +56,11 @@ fi
 if [ ! -d ~/.config/nvim ]; then
     echo "Creating .config/nvim directory..."
     mkdir -p ~/.config/nvim
+    echo "...done"
+fi
+if [ ! -d ~/.config/xmobar ]; then
+    echo "Creating .config/xmobar..."
+    mkdir -p ~/.config/xmobar
     echo "...done"
 fi
 
@@ -117,6 +122,43 @@ fi
 echo "Creating symbolic link to ~/.dotfiles/tmux/.tmux.conf..."
 ln -s ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
 echo "...done"
+
+# Symbolic link .xmobarrc
+if [ -e ~/.config/xmobar/.xmobarrc ] || [ -h ~/.config/xmobar/.xmobarrc ]; then
+    echo "Removing old .xmobarrc..."
+    rm ~/.config/xmobar/.xmobarrc
+    echo "...done"
+fi
+if [ -e ~/.xmobarrc ] || [ -h ~/.xmobarrc ]; then
+    echo "Removing old .xmobarrc..."
+    rm ~/.xmobarrc
+    echo "...done"
+fi
+ln -s ~/.dotfiles/xmobar/.xmobarrc ~/.config/xmobar/.xmobarrc
+
+# Symbolic link xmonad.hs
+if [ -e ~/.xmonad/xmonad.hs ] || [ -h ~/.xmonad/xmonad.hs ]; then
+    echo "Removing old xmonad.hs..."
+    rm ~/.xmonad/xmonad.hs
+    echo "...done"
+fi
+ln -s ~/.dotfiles/xmonad/xmonad.hs ~/.xmonad/xmonad.hs
+
+# Symbolic link .xinitrc
+if [ -e ~/.xinitrx ] || [ -h ~/.xinitc ]; then
+    echo "Removing old .xinitrc..."
+    rm ~/.xinitrc
+    echo "...done"
+fi
+ln -s ~/.dotfiles/xinitrc ~/.xinitrc
+
+# Symbolic link .xprofile
+if [ -e ~/.xprofile ] || [ -h ~/.xprofile ]; then
+    echo "Removing old .xprofile..."
+    rm ~/.xprofile
+    echo "...done"
+fi
+ln -s ~/.dotfiles/xprofile ~/.xprofile
 
 # Install zsh-syntax-highlighting if not already installed
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
