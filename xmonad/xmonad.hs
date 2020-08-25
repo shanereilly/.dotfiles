@@ -35,7 +35,7 @@ myClickJustFocuses = False
 
 -- Width of the window border in pixels.
 myBorderWidth :: Dimension
-myBorderWidth = 2 
+myBorderWidth = 2
 
 -- Mod key
 myModMask :: KeyMask

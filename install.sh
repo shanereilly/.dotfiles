@@ -121,7 +121,14 @@ if [ ! -d ~/.oh-my-zsh ]; then
 fi
 
 # Add custom oh-my-zsh theme
-ln -s ~/.dotfiles/oh-my-zsh/themes/zion.zsh-theme ~/.oh-my-zsh/themes/zion.zs-theme
+if [ ! -e ~/.oh-my-zsh/themes/zion.zsh-theme ] || [ -h ~/.oh-my-zsh/themese/zion.zsh-theme ]; then
+    echo "Removing old oh-my-zsh theme..."
+    rm ~/.oh-my-zsh/themes/zion.zsh-theme
+    echo "...done"
+fi
+echo "Creating symbolic linke to ~/.dotfiles/oh-my-zsh/themese/zion.zsh-theme..."
+ln -s ~/.dotfiles/oh-my-zsh/themes/zion.zsh-theme ~/.oh-my-zsh/themes/zion.zsh-theme
+echo "...done"
 
 # Symbolic link tmux.conf
 if [ -e ~/.tmux.conf ] || [ -h ~/.tmux.conf ]; then
