@@ -29,174 +29,208 @@ if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
     sudo apt update && sudo apt upgrade
     echo "...done"
     echo "Using apt to install needed packages..."
-    sudo apt install curl fonts-powerline libghc-xmonad-wallpaper-dev neofetch neovim openjdk-13-jdk ranger tree wget xmobar xmonad
+    sudo apt install \
+    binwalk \ #
+    curl \ #
+    fonts-powerline \ #
+    libghc-xmonad-wallpaper-dev \ #
+    neofetch \ #
+    neovim \ # text editor
+    openjdk-13-jdk \
+    ranger \ # file browser
+    texlive-full \
+    tree \
+    wget \ 
+    xmobar \ # toolbar
+    xmonad # window manager
     echo "...done"
 elif [ $distro = "MacOS" ]; then
     echo "Updating and upgrading packages..."
     brew update && brew upgrade
     echo "...done"
     echo "Using brew to install needed packages..."
-    brew install alacritty curl neofetch neovim ranger tree wget
+    brew install \
+    alacritty \
+    curl \
+    neofetch \
+    neovim \
+    ranger \
+    tree \ 
+    wget 
 elif [ $distro = "Arch"]; then
     echo "Updating and upgrading packages..."
     pacman -Syy
     echo "...done"
     echo "Using pacman to install needed packages..."
-    pacman -S alacritty dmenu neofetch ranger tree xcompmg xmoibar xmonad xmonad-contrib
+    pacman -S \
+    alacritty \
+    dmenu \
+    neofetch \
+    ranger \
+    tree \
+    xcompmg \
+    xmobar \
+    xmonad \
+    xmonad-contrib
     echo "...done"
 fi
 
 # Create directories
-if [ ! -d ~/.config/alacritty ]; then
+if [ ! -d $HOME/.config/alacritty ]; then
     echo "Creating .config/alacritty directory..."
-    mkdir -p ~/.config/alacritty
+    mkdir -p $HOME/.config/alacritty
     echo "...done"
 fi
 
-if [ ! -d ~/.config/nvim ]; then
+if [ ! -d $HOME/.config/nvim ]; then
     echo "Creating .config/nvim directory..."
-    mkdir -p ~/.config/nvim
+    mkdir -p $HOME/.config/nvim
     echo "...done"
 fi
-if [ ! -d ~/.config/xmobar ]; then
+if [ ! -d $HOME/.config/xmobar ]; then
     echo "Creating .config/xmobar..."
-    mkdir -p ~/.config/xmobar
+    mkdir -p $HOME/.config/xmobar
+    echo "...done"
+fi
+if [ ! -d $HOME/.xmonad ]; then
+    echo "Creating .xmonad directory..."
+    mkdir -p $HOME/.xmonad
     echo "...done"
 fi
 
 # Install vim-plug
-if [ ! -e ~/.local/share/nvim/site/autoload/plug.vim ]; then
+if [ ! -e $HOME/.local/share/nvim/site/autoload/plug.vim ]; then
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
 # Symbolic link alacritty config
-if [ -e ~/.config/alacritty/alacritty.yml ] || [ -h ~/.config/alacritty/alacritty.yml ]; then
+if [ -e $HOME/.config/alacritty/alacritty.yml ] || [ -h $HOME/.config/alacritty/alacritty.yml ]; then
     echo "Deleting old alacritty.yml..."
-    rm ~/.config/alacritty/alacritty.yml
+    rm $HOME/.config/alacritty/alacritty.yml
     echo "...done"
 fi
 
-echo "Creating symbolic link to ~/.dotfiles/alacritty.yml..."
-ln -s ~/.dotfiles/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+echo "Creating symbolic link to $HOME/.dotfiles/alacritty.yml..."
+ln -s $HOME/.dotfiles/alacritty/alacritty.yml $HOME/.config/alacritty/alacritty.yml
 echo "...done"
 
 # Symbolic link gdb config
-if [ -e ~/.gdbinit ] || [ -h ~/.gdbinit ]; then
+if [ -e $HOME/.gdbinit ] || [ -h $HOME/.gdbinit ]; then
     echo "Deleting old .gdbinit..."
-    rm ~/.gdbinit
+    rm $HOME/.gdbinit
     echo "...done"
 fi
-echo "Creating symbolic link to ~/.dotfiles/gdb/.gdbinit..."
-ln -s ~/.dotfiles/gdb/.gdbinit ~/.gdbinit
+echo "Creating symbolic link to $HOME/.dotfiles/gdb/.gdbinit..."
+ln -s $HOME/.dotfiles/gdb/.gdbinit $HOME/.gdbinit
 echo "...done"
 
 # Install pwndbg
 echo "Installing pwndbg..."
-cd ~/.dotfiles/tools/pwndbg/
+cd $HOME/.dotfiles/tools/pwndbg/
 ./setup.sh
-cd ~
+cd $HOME
 echo "...done"
 
 # Symbolic link nvim config
-if [ -e ~/.config/nvim/init.vim ] || [ -h ~/.config/nvim/init.vim ]; then
+if [ -e $HOME/.config/nvim/init.vim ] || [ -h $HOME/.config/nvim/init.vim ]; then
     echo "Deleting old init.vim..."
-    rm -f ~/.config/nvim/init.vim
+    rm -f $HOME/.config/nvim/init.vim
     echo "...done"
 fi
-if [ -e ~/.vimrc ] || [ -h ~/.vimrc ]; then
+if [ -e $HOME/.vimrc ] || [ -h $HOME/.vimrc ]; then
     echo "Removing old .vimrc..."
-    rm ~/.vimrc
+    rm $HOME/.vimrc
     echo "...done"
 fi
-echo "Creating symbolic link to ~/.dotfiles/vim/.vimrc"
-ln -s ~/.dotfiles/vim/.vimrc ~/.config/nvim/init.vim
+echo "Creating symbolic link to $HOME/.dotfiles/vim/.vimrc"
+ln -s $HOME/.dotfiles/vim/.vimrc $HOME/.config/nvim/init.vim
 echo "...done"
 
 # Install oh-my-zsh if not already installed
-if [ ! -d ~/.oh-my-zsh ]; then
+if [ ! -d $HOME/.oh-my-zsh ]; then
     echo "Installing oh-my-zsh"
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     echo "...done"
 fi
 
 # Add custom oh-my-zsh theme
-if [ ! -e ~/.oh-my-zsh/themes/zion.zsh-theme ] || [ -h ~/.oh-my-zsh/themese/zion.zsh-theme ]; then
+if [ ! -e $HOME/.oh-my-zsh/themes/zion.zsh-theme ] || [ -h $HOME/.oh-my-zsh/themes/zion.zsh-theme ]; then
     echo "Removing old oh-my-zsh theme..."
-    rm ~/.oh-my-zsh/themes/zion.zsh-theme
+    rm $HOME/.oh-my-zsh/themes/zion.zsh-theme
     echo "...done"
 fi
-echo "Creating symbolic linke to ~/.dotfiles/oh-my-zsh/themese/zion.zsh-theme..."
-ln -s ~/.dotfiles/oh-my-zsh/themes/zion.zsh-theme ~/.oh-my-zsh/themes/zion.zsh-theme
+echo "Creating symbolic linke to $HOME/.dotfiles/oh-my-zsh/themes/zion.zsh-theme..."
+ln -s $HOME/.dotfiles/oh-my-zsh/themes/zion.zsh-theme $HOME/.oh-my-zsh/themes/zion.zsh-theme
 echo "...done"
 
 # Symbolic link tmux.conf
-if [ -e ~/.tmux.conf ] || [ -h ~/.tmux.conf ]; then
+if [ -e $HOME/.tmux.conf ] || [ -h $HOME/.tmux.conf ]; then
     echo "Removing old .tmux.conf..."
-    rm ~/.tmux.conf
+    rm $HOME/.tmux.conf
     echo "...done"
 fi
-echo "Creating symbolic link to ~/.dotfiles/tmux/.tmux.conf..."
-ln -s ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
+echo "Creating symbolic link to $HOME/.dotfiles/tmux/.tmux.conf..."
+ln -s $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
 echo "...done"
 
 # Symbolic link .xmobarrc
-if [ -e ~/.config/xmobar/.xmobarrc ] || [ -h ~/.config/xmobar/.xmobarrc ]; then
+if [ -e $HOME/.config/xmobar/.xmobarrc ] || [ -h $HOME/.config/xmobar/.xmobarrc ]; then
     echo "Removing old .xmobarrc..."
-    rm ~/.config/xmobar/.xmobarrc
+    rm $HOME/.config/xmobar/.xmobarrc
     echo "...done"
 fi
-if [ -e ~/.xmobarrc ] || [ -h ~/.xmobarrc ]; then
+if [ -e $HOME/.xmobarrc ] || [ -h $HOME/.xmobarrc ]; then
     echo "Removing old .xmobarrc..."
-    rm ~/.xmobarrc
+    rm $HOME/.xmobarrc
     echo "...done"
 fi
-echo "Creating symbolic link to ~/.dotfiles/xmobar/xmobarrc..."
-ln -s ~/.dotfiles/xmobar/xmobarrc ~/.config/xmobar/.xmobarrc
+echo "Creating symbolic link to $HOME/.dotfiles/xmobar/xmobarrc..."
+ln -s $HOME/.dotfiles/xmobar/xmobarrc $HOME/.config/xmobar/.xmobarrc
 echo "...done"
 
 # Symbolic link xmonad.hs
-if [ -e ~/.xmonad/xmonad.hs ] || [ -h ~/.xmonad/xmonad.hs ]; then
+if [ -e $HOME/.xmonad/xmonad.hs ] || [ -h $HOME/.xmonad/xmonad.hs ]; then
     echo "Removing old xmonad.hs..."
-    rm ~/.xmonad/xmonad.hs
+    rm $HOME/.xmonad/xmonad.hs
     echo "...done"
 fi
-echo "Creating symbolic link to ~/.dotfiles/xmonad/xmonad.hs..."
-ln -s ~/.dotfiles/xmonad/xmonad.hs ~/.xmonad/xmonad.hs
+echo "Creating symbolic link to $HOME/.dotfiles/xmonad/xmonad.hs..."
+ln -s $HOME/.dotfiles/xmonad/xmonad.hs $HOME/.xmonad/xmonad.hs
 echo "...done"
 
 # Symbolic link .xinitrc
-if [ -e ~/.xinitrc ] || [ -h ~/.xinitc ]; then
+if [ -e $HOME/.xinitrc ] || [ -h $HOME/.xinitrc ]; then
     echo "Removing old .xinitrc..."
-    rm ~/.xinitrc
+    rm $HOME/.xinitrc
     echo "...done"
 fi
-echo "Creating symbolic link to ~/.dotfiles/xinitrc..."
-ln -s ~/.dotfiles/xinitrc ~/.xinitrc
+echo "Creating symbolic link to $HOME/.dotfiles/xinitrc..."
+ln -s $HOME/.dotfiles/xinitrc $HOME/.xinitrc
 echo "...done"
 
 # Symbolic link .xprofile
-if [ -e ~/.xprofile ] || [ -h ~/.xprofile ]; then
+if [ -e $HOME/.xprofile ] || [ -h $HOME/.xprofile ]; then
     echo "Removing old .xprofile..."
-    rm ~/.xprofile
+    rm $HOME/.xprofile
     echo "...done"
 fi
-ln -s ~/.dotfiles/xprofile ~/.xprofile
+ln -s $HOME/.dotfiles/xprofile $HOME/.xprofile
 
 # Install zsh-syntax-highlighting if not already installed
-if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
     echo "Installing zsh-syntax-highlighting"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     echo "...done"
 fi
 
 # Symbolic link .zshrc
-if [ -e ~/.zshrc ] || [ -h ~/.zshrc ]; then
+if [ -e $HOME/.zshrc ] || [ -h $HOME/.zshrc ]; then
     echo "Removing old .zshrc..."
-    rm ~/.zshrc
+    rm $HOME/.zshrc
     echo "...done"
 fi
-echo "Creating symbolic link to ~/.dotfiles/zsh/.zshrc..."
-ln -s ~/.dotfiles/zsh/.zshrc ~/.zshrc
+echo "Creating symbolic link to $HOME/.dotfiles/zsh/.zshrc..."
+ln -s $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
 echo "...done"
 
