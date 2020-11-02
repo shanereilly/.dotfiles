@@ -34,6 +34,7 @@ if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
     curl \ #
     fonts-powerline \ #
     libghc-xmonad-wallpaper-dev \ #
+    locate \
     neofetch \ #
     neovim \ # text editor
     openjdk-13-jdk \
@@ -52,6 +53,7 @@ elif [ $distro = "MacOS" ]; then
     brew install \
     alacritty \
     curl \
+    findutils \
     neofetch \
     neovim \
     ranger \
