@@ -26,24 +26,23 @@ fi
 # Install necessary packages
 if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
     echo "Updating and upgrading packages..."
-    sudo apt update && sudo apt upgrade
+    sudo apt-get update && sudo apt upgrade
     echo "...done"
     echo "Using apt to install needed packages..."
-    sudo apt install \
-    binwalk \ #
-    curl \ #
-    fonts-powerline \ #
-    libghc-xmonad-wallpaper-dev \ #
+    sudo apt-get install \
+    binwalk \ 
+    curl \ 
+    fonts-powerline \ 
+    libghc-xmonad-wallpaper-dev \ 
     locate \
-    neofetch \ #
-    neovim \ # text editor
-    openjdk-13-jdk \
-    ranger \ # file browser
+    neofetch \ 
+    neovim \ 
+    ranger \
     texlive-full \
     tree \
     wget \ 
-    xmobar \ # toolbar
-    xmonad # window manager
+    xmobar \
+    xmonad
     echo "...done"
 elif [ $distro = "MacOS" ]; then
     echo "Updating and upgrading packages..."
@@ -125,6 +124,16 @@ if [ -e $HOME/.gdbinit ] || [ -h $HOME/.gdbinit ]; then
 fi
 echo "Creating symbolic link to $HOME/.dotfiles/gdb/.gdbinit..."
 ln -s $HOME/.dotfiles/gdb/.gdbinit $HOME/.gdbinit
+echo "...done"
+
+# Symbolic link ghci config
+if [ -e $HOME/.ghc/ghci.conf ] || [ -h $HOME/.ghc/ghci.conf ]; then
+    echo "Deleting old ghci.conf...."
+    rm $HOME/.ghc/ghci.conf
+    echo "...done"
+fi
+echo "Creating symbolic link to $HOME/.dotfiles/ghc/ghci.conf..."
+ln -s $HOME/.dotfiles/ghc/ghci.conf $HOME/.ghc/ghci.conf
 echo "...done"
 
 # Install pwndbg
