@@ -33,19 +33,23 @@ if [ $distro = "Ubuntu" ] || [ $distro = "Debian" ]; then
     echo "...done"
     echo "Using apt to install needed packages..."
     sudo apt-get install \
-    binwalk \ 
-    curl \ 
-    fonts-powerline \ 
-    libghc-xmonad-wallpaper-dev \ 
-    locate \
-    neofetch \ 
-    neovim \ 
-    ranger \
-    texlive-full \
-    tree \
-    wget \ 
-    xmobar \
-    xmonad
+        binwalk \
+        curl \
+        docker \
+        docker-compose \
+        fonts-hermit \
+        fonts-powerline \
+        libghc-xmonad-wallpaper-dev \
+        locate \
+        neofetch \
+        neovim \
+        ranger \
+        #texlive-full \
+        tree \
+        wget \
+        xmobar \
+        xmonad \
+        zsh
     echo "...done"
 elif [ $distro = "MacOS" ]; then
     echo "Updating and upgrading packages..."
@@ -53,31 +57,39 @@ elif [ $distro = "MacOS" ]; then
     echo "...done"
     echo "Using brew to install needed packages..."
     brew install \
-    alacritty \
-    curl \
-    findutils \
-    neofetch \
-    neovim \
-    ranger \
-    tree \ 
-    wget 
+        alacritty \
+        curl \
+        docker \
+        docker-compose \
+        findutils \
+        neofetch \
+        neovim \
+        ranger \
+        tree \
+        wget
 elif [ $distro = "Arch" ]; then
     echo "Updating and upgrading packages..."
     sudo pacman -Syy
     echo "...done"
     echo "Using pacman to install needed packages..."
     pacman -S \
-    alacritty \
-    dmenu \
-    neofetch \
-    ranger \
-    tree \
-    xcompmg \
-    xmobar \
-    xmonad \
-    xmonad-contrib
-    xorg \
-    xorg-xinit \
+        alacritty \
+        base-devel \
+        dmenu \
+        firefox \
+        neofetch \
+        neovim \
+        nitrogen \
+        picom \
+        ranger \
+        tree \
+        xcompmg \
+        xmobar \
+        xmonad \
+        xmonad-contrib \
+        xorg \
+        xorg-xinit \
+        zsh
     echo "...done"
 fi
 
@@ -218,7 +230,7 @@ ln -s $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
 echo "...done"
 
 # LINUX ONLY
-if [ $disto != "MacOS" ]; then
+if [ $disto !="MacOS" ]; then
     # Symbolic link .xmobarrc
     if [ -e $HOME/.config/xmobar/.xmobarrc ] || [ -h $HOME/.config/xmobar/.xmobarrc ]; then
         echo "Removing old .xmobarrc..."

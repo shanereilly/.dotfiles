@@ -1,1 +1,2 @@
-compton &
+nitrogen --restore &
+picom &
