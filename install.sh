@@ -175,7 +175,7 @@ if [ ! -d $HOME/.oh-my-zsh ]; then
 fi
 
 # Add custom oh-my-zsh theme
-if [ ! -e $HOME/.oh-my-zsh/themes/zion.zsh-theme ] || [ -h $HOME/.oh-my-zsh/themes/zion.zsh-theme ]; then
+if [ -e $HOME/.oh-my-zsh/themes/zion.zsh-theme ] || [ -h $HOME/.oh-my-zsh/themes/zion.zsh-theme ]; then
     echo "Removing old oh-my-zsh theme..."
     rm $HOME/.oh-my-zsh/themes/zion.zsh-theme
     echo "...done"
