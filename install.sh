@@ -63,7 +63,7 @@ elif [ $distro = "MacOS" ]; then
     wget 
 elif [ $distro = "Arch" ]; then
     echo "Updating and upgrading packages..."
-    pacman -Syy
+    sudo pacman -Syy
     echo "...done"
     echo "Using pacman to install needed packages..."
     pacman -S \
@@ -76,6 +76,8 @@ elif [ $distro = "Arch" ]; then
     xmobar \
     xmonad \
     xmonad-contrib
+    xorg \
+    xorg-xinit \
     echo "...done"
 fi
 
@@ -97,15 +99,19 @@ if [ ! -d $HOME/.config/nvim ]; then
     mkdir -p $HOME/.config/nvim
     echo "...done"
 fi
-if [ ! -d $HOME/.config/xmobar ]; then
-    echo "Creating .config/xmobar..."
-    mkdir -p $HOME/.config/xmobar
-    echo "...done"
-fi
-if [ ! -d $HOME/.xmonad ]; then
-    echo "Creating .xmonad directory..."
-    mkdir -p $HOME/.xmonad
-    echo "...done"
+
+## Linux only dirs
+if [$distr != "MacOS"]; then
+    if [ ! -d $HOME/.config/xmobar ]; then
+        echo "Creating .config/xmobar..."
+        mkdir -p $HOME/.config/xmobar
+        echo "...done"
+    fi
+    if [ ! -d $HOME/.xmonad ]; then
+        echo "Creating .xmonad directory..."
+        mkdir -p $HOME/.xmonad
+        echo "...done"
+    fi
 fi
 
 # Install vim-plug
@@ -194,49 +200,6 @@ echo "Creating symbolic link to $HOME/.dotfiles/tmux/.tmux.conf..."
 ln -s $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
 echo "...done"
 
-# Symbolic link .xmobarrc
-if [ -e $HOME/.config/xmobar/.xmobarrc ] || [ -h $HOME/.config/xmobar/.xmobarrc ]; then
-    echo "Removing old .xmobarrc..."
-    rm $HOME/.config/xmobar/.xmobarrc
-    echo "...done"
-fi
-if [ -e $HOME/.xmobarrc ] || [ -h $HOME/.xmobarrc ]; then
-    echo "Removing old .xmobarrc..."
-    rm $HOME/.xmobarrc
-    echo "...done"
-fi
-echo "Creating symbolic link to $HOME/.dotfiles/xmobar/xmobarrc..."
-ln -s $HOME/.dotfiles/xmobar/xmobarrc $HOME/.config/xmobar/.xmobarrc
-echo "...done"
-
-# Symbolic link xmonad.hs
-if [ -e $HOME/.xmonad/xmonad.hs ] || [ -h $HOME/.xmonad/xmonad.hs ]; then
-    echo "Removing old xmonad.hs..."
-    rm $HOME/.xmonad/xmonad.hs
-    echo "...done"
-fi
-echo "Creating symbolic link to $HOME/.dotfiles/xmonad/xmonad.hs..."
-ln -s $HOME/.dotfiles/xmonad/xmonad.hs $HOME/.xmonad/xmonad.hs
-echo "...done"
-
-# Symbolic link .xinitrc
-if [ -e $HOME/.xinitrc ] || [ -h $HOME/.xinitrc ]; then
-    echo "Removing old .xinitrc..."
-    rm $HOME/.xinitrc
-    echo "...done"
-fi
-echo "Creating symbolic link to $HOME/.dotfiles/xinitrc..."
-ln -s $HOME/.dotfiles/xinitrc $HOME/.xinitrc
-echo "...done"
-
-# Symbolic link .xprofile
-if [ -e $HOME/.xprofile ] || [ -h $HOME/.xprofile ]; then
-    echo "Removing old .xprofile..."
-    rm $HOME/.xprofile
-    echo "...done"
-fi
-ln -s $HOME/.dotfiles/xprofile $HOME/.xprofile
-
 # Install zsh-syntax-highlighting if not already installed
 if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
     echo "Installing zsh-syntax-highlighting"
@@ -254,3 +217,48 @@ echo "Creating symbolic link to $HOME/.dotfiles/zsh/.zshrc..."
 ln -s $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
 echo "...done"
 
+# LINUX ONLY
+if [ $disto != "MacOS" ]; then
+    # Symbolic link .xmobarrc
+    if [ -e $HOME/.config/xmobar/.xmobarrc ] || [ -h $HOME/.config/xmobar/.xmobarrc ]; then
+        echo "Removing old .xmobarrc..."
+        rm $HOME/.config/xmobar/.xmobarrc
+        echo "...done"
+    fi
+    if [ -e $HOME/.xmobarrc ] || [ -h $HOME/.xmobarrc ]; then
+        echo "Removing old .xmobarrc..."
+        rm $HOME/.xmobarrc
+        echo "...done"
+    fi
+    echo "Creating symbolic link to $HOME/.dotfiles/xmobar/xmobarrc..."
+    ln -s $HOME/.dotfiles/xmobar/xmobarrc $HOME/.config/xmobar/.xmobarrc
+    echo "...done"
+
+    # Symbolic link xmonad.hs
+    if [ -e $HOME/.xmonad/xmonad.hs ] || [ -h $HOME/.xmonad/xmonad.hs ]; then
+        echo "Removing old xmonad.hs..."
+        rm $HOME/.xmonad/xmonad.hs
+        echo "...done"
+    fi
+    echo "Creating symbolic link to $HOME/.dotfiles/xmonad/xmonad.hs..."
+    ln -s $HOME/.dotfiles/xmonad/xmonad.hs $HOME/.xmonad/xmonad.hs
+    echo "...done"
+
+    # Symbolic link .xinitrc
+    if [ -e $HOME/.xinitrc ] || [ -h $HOME/.xinitrc ]; then
+        echo "Removing old .xinitrc..."
+        rm $HOME/.xinitrc
+        echo "...done"
+    fi
+    echo "Creating symbolic link to $HOME/.dotfiles/xinitrc..."
+    ln -s $HOME/.dotfiles/xinitrc $HOME/.xinitrc
+    echo "...done"
+
+    # Symbolic link .xprofile
+    if [ -e $HOME/.xprofile ] || [ -h $HOME/.xprofile ]; then
+        echo "Removing old .xprofile..."
+        rm $HOME/.xprofile
+        echo "...done"
+    fi
+    ln -s $HOME/.dotfiles/xprofile $HOME/.xprofile
+fi
