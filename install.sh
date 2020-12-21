@@ -17,6 +17,9 @@ if [ `uname` != "Darwin" ]; then
     if [ `cat /etc/*-release | grep -c "ubuntu"` -gt 0 ]; then
         echo "Running Ubuntu"
         distro="Ubuntu"
+    elif [ `cat /etc/*-release | grep -c "archlinux"` -gt 0 ]; then
+	echo "Running Arch"
+	distro="Arch"
     fi
 elif [ `uname` = "Darwin" ]; then
     echo "Running MacOs"
@@ -58,7 +61,7 @@ elif [ $distro = "MacOS" ]; then
     ranger \
     tree \ 
     wget 
-elif [ $distro = "Arch"]; then
+elif [ $distro = "Arch" ]; then
     echo "Updating and upgrading packages..."
     pacman -Syy
     echo "...done"
@@ -80,6 +83,12 @@ fi
 if [ ! -d $HOME/.config/alacritty ]; then
     echo "Creating .config/alacritty directory..."
     mkdir -p $HOME/.config/alacritty
+    echo "...done"
+fi
+
+if [ ! -d $HOME/.ghc ]; then
+    echo "Creating .ghc directory..."
+    mkdir -p $HOME/.ghc
     echo "...done"
 fi
 
