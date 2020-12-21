@@ -113,7 +113,7 @@ if [ ! -d $HOME/.config/nvim ]; then
 fi
 
 ## Linux only dirs
-if [$distr != "MacOS"]; then
+if [ $distro != "MacOS" ]; then
     if [ ! -d $HOME/.config/xmobar ]; then
         echo "Creating .config/xmobar..."
         mkdir -p $HOME/.config/xmobar
@@ -163,12 +163,17 @@ echo "Creating symbolic link to $HOME/.dotfiles/ghc/ghci.conf..."
 ln -s $HOME/.dotfiles/ghc/ghci.conf $HOME/.ghc/ghci.conf
 echo "...done"
 
-# Install pwndbg
-echo "Installing pwndbg..."
-cd $HOME/.dotfiles/tools/pwndbg/
-./setup.sh
-cd $HOME
-echo "...done"
+# Install pwndbg manually if not on Arch
+if [ $distro != "Arch" ]; then
+    echo "Installing pwndbg..."
+    cd $HOME/.dotfiles/tools/pwndbg/
+    ./setup.sh
+    cd $HOME
+    echo "...done"
+else
+    yay -S pwndbg-git
+fi
+
 
 # Symbolic link nvim config
 if [ -e $HOME/.config/nvim/init.vim ] || [ -h $HOME/.config/nvim/init.vim ]; then
